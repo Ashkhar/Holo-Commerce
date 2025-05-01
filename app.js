@@ -29,10 +29,11 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
-  secret: 'your_secret_key',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
+
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
