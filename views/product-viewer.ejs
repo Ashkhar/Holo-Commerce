@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= product.name %> Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: white;
+    }
+    .info-box {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 8px;
+      z-index: 10;
+    }
+    canvas {
+      display: block;
+    }
+    .ar-btn {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      background: #00c853;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      z-index: 10;
+    }
+    .ar-btn:hover {
+      background: #00b04f;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="info-box">
+    <h2><%= product.name %></h2>
+    <p>Price: ₹<%= product.price.toLocaleString() %></p>
+  </div>
+
+  <script type="module">
+    import * as THREE from "https://unpkg.com/three@0.126.1/build/three.module.js";
+    import { GLTFLoader } from "https://unpkg.com/three@0.126.1/examples/jsm/loaders/GLTFLoader.js";
+    import { OrbitControls } from "https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js";
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff);
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+    scene.add(ambientLight);
+
+    const loader = new GLTFLoader();
+
+    // ✅ Corrected loader URL to your new Netlify with /models/
+    const modelUrl = `https://glistening-beignet-a33d5c.netlify.app/models/<%= product.model %>`;
+
+    loader.load(modelUrl, (gltf) => {
+      const model = gltf.scene;
+      model.scale.set(1.5, 1.5, 1.5);
+      scene.add(model);
+    }, undefined, (error) => {
+      console.error('Error loading model:', error);
+    });
+
+    camera.position.set(0, 1, 3);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+
+  <!-- ✅ Corrected Scene Viewer AR Intent link -->
+  <a
+    class="ar-btn"
+    href="intent://arvr.google.com/scene-viewer/1.0?file=https://glistening-beignet-a33d5c.netlify.app/models/<%= product.model %>&mode=ar&title=<%= product.name %>#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=https://glistening-beignet-a33d5c.netlify.app/models/<%= product.model %>;end;"
+  >
+    View in AR
+  </a>
+
+  <form action="/add-to-cart" method="POST" style="position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%); z-index: 10;">
+    <input type="hidden" name="productId" value="<%= product.key %>">
+    <button type="submit" style="padding: 12px 24px; background: #2196F3; color: white; font-size: 16px; border-radius: 8px; border: none; cursor: pointer;">
+      Add to Cart
+    </button>
+  </form>
+
+</body>
+</html>

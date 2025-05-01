@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Place Order - HoloCommerce</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #f8f9fa, #e0eafc);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .order-container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 30px 40px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .product-summary {
+      margin-bottom: 40px;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #fafafa;
+    }
+
+    .product-summary h2 {
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+
+    .product-summary ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .product-summary li {
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .product-summary strong {
+      font-size: 1.2rem;
+      color: #222;
+    }
+
+    .form-section {
+      border: 1px solid #ddd;
+      padding: 25px;
+      border-radius: 8px;
+      background-color: #fdfdfd;
+    }
+
+    .form-section h2 {
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+
+    .form-section input,
+    .form-section textarea,
+    .form-section select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .form-section input:focus,
+    .form-section textarea:focus,
+    .form-section select:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
+    }
+
+    textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    .coupon-section {
+      margin-bottom: 20px;
+    }
+
+    .place-btn {
+      width: 100%;
+      padding: 15px;
+      background-color: #28a745;
+      color: white;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .place-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="order-container">
+    <h1 class="title">🛍 Place Your Order</h1>
+
+    <div class="product-summary">
+      <h2>🧾 Order Summary</h2>
+      <ul>
+        <% cartItems.forEach(item => { %>
+          <li><%= item.name %> - ₹<%= item.price %> × <%= item.qty %></li>
+        <% }) %>
+        <hr />
+        <strong>Total: ₹<%= total %></strong>
+      </ul>
+    </div>
+
+    <div class="form-section">
+      <h2>📦 Shipping Details</h2>
+      <form action="/placeorder" method="POST">
+        <input type="text" name="name" placeholder="Full Name" required />
+        <input type="email" name="email" placeholder="Email Address" required />
+        <textarea name="address" placeholder="Shipping Address" required></textarea>
+
+        <div class="coupon-section">
+          <input type="text" name="coupon" placeholder="Enter Coupon Code" />
+        </div>
+
+        <h3>💳 Payment Method</h3>
+        <select name="payment" required>
+          <option value="">Choose Payment Method</option>
+          <option value="cod">Cash on Delivery</option>
+          <option value="card">Credit/Debit Card</option>
+          <option value="upi">UPI</option>
+        </select>
+
+        <button type="submit" class="place-btn">✅ Place Order</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

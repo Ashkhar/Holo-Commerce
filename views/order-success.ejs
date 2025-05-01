@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order Successful - HoloCommerce</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .success-container {
+      max-width: 900px;
+      margin: 50px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 30px 40px;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .order-summary {
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+    }
+
+    .order-summary h2 {
+      margin-bottom: 15px;
+    }
+
+    .order-summary ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .order-summary li {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .order-summary strong {
+      font-size: 1.4rem;
+      color: #222;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 25px;
+      background-color: #007bff;
+      color: white;
+      font-size: 1rem;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-container">
+    <h1 class="title">🎉 Order Placed Successfully!</h1>
+
+    <p>Thank you for your purchase. Your order is being processed.</p>
+
+    <div class="order-summary">
+      <h2>🧾 Order Summary</h2>
+      <ul>
+        <% cartItems.forEach(item => { %>
+          <li><%= item.name %> - ₹<%= item.price %> × <%= item.qty %></li>
+        <% }) %>
+        <hr />
+        <strong>Total: ₹<%= total %></strong>
+      </ul>
+    </div>
+
+    <a href="/" class="back-btn">Back to Home</a>
+  </div>
+
+</body>
+</html>
+
